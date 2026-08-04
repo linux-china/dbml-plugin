@@ -124,7 +124,7 @@ private primary_key_setting ::= PRIMARY KEY
 private pk_setting ::= PK
 private unique_setting ::= UNIQUE
 private increment_setting ::= INCREMENT
-private default_setting ::= DEFAULT COLON (string_literal_ | EXPRESSION | LITERAL | NUMBER)
+private default_setting ::= DEFAULT COLON (string_literal_ | EXPRESSION | LITERAL | NUMBER | NULL)
 private column_note_setting ::= NOTE COLON string_literal_
 private check_setting ::= CHECK COLON EXPRESSION
 column_inline_ref ::= REF identifier_? COLON relation ref_column_names
@@ -195,7 +195,7 @@ private table_group_note ::= NOTE note_value
 table_partial ::= TABLEPARTIAL identifier_ table_settings? LBRACE table_body RBRACE {pin=1}
 
 // === Named Note ===
-named_note ::= NOTE identifier_ LBRACE string_literal_ RBRACE {pin=1}
+named_note ::= NOTE identifier_ note_value {pin=1}
 
 // === Note (shared) ===
-note_value ::= COLON string_literal_ | LBRACE string_literal_ RBRACE
+note_value ::= (COLON string_literal_) | (LBRACE nl_? string_literal_ nl_? RBRACE)
