@@ -89,7 +89,8 @@ private identifier_ ::= LITERAL | DOUBLE_QUOTED_STRING
                        | UNIQUE | INCREMENT | PRIMARY | INDEXES | BTREE | HASH
                        | DELETE | UPDATE | CASCADE | RESTRICT | SET | NO | ACTION
                        | HEADERCOLOR | COLOR | AS | CHECK | CHECKS
-table_name ::= identifier_ (DOT identifier_)?
+schema_prefix ::= identifier_ DOT
+table_name ::= schema_prefix? identifier_
 private string_literal_ ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | triple_quoted_string
 triple_quoted_string ::= TRIPLE_STRING_OPEN (TRIPLE_STRING_CONTENT | STRING_ESCAPE | NEWLINE)* TRIPLE_STRING_CLOSE {pin=1}
 private nl_ ::= NEWLINE+
@@ -113,7 +114,7 @@ table_partial_ref ::= TILDE identifier_
 
 // === Column ===
 column_definition ::= identifier_ column_datatype column_settings? {pin=1}
-column_datatype ::= identifier_ (LPAREN datatype_param (COMMA datatype_param)* RPAREN)?
+column_datatype ::= schema_prefix? identifier_ (LPAREN datatype_param (COMMA datatype_param)* RPAREN)?
 private datatype_param ::= LITERAL | NUMBER
 column_settings ::= LBRACK column_setting (COMMA column_setting)* RBRACK {pin=1}
 column_setting ::= not_null_setting | null_setting | primary_key_setting | pk_setting
