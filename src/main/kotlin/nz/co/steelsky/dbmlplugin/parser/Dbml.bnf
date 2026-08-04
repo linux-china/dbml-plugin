@@ -107,7 +107,7 @@ table_settings ::= LBRACK table_setting (COMMA table_setting)* RBRACK {pin=1}
 table_setting ::= HEADERCOLOR COLON COLOR_CODE | NOTE COLON string_literal_
 // Order matters: indexes_definition, table_note, and table_partial_ref must be tried
 // BEFORE column_definition, because identifier_ now matches keywords like NOTE, INDEXES, etc.
-private table_body ::= (indexes_definition | checks_definition | table_note | table_partial_ref | column_definition | nl_)*
+private table_body ::= (indexes_definition | checks_definition | table_note | table_partial_ref | table_records | column_definition | nl_)*
 private table_note ::= NOTE note_value
 table_partial_ref ::= TILDE identifier_
 
