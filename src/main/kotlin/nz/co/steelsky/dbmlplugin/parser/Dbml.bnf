@@ -12,6 +12,7 @@
   tokens = [
     PROJECT="PROJECT"
     TABLE="TABLE"
+    RECORDS="RECORDS"
     AS="AS"
     REF="REF"
     ENUM="ENUM"
@@ -75,9 +76,9 @@
 // Root — NEWLINE is NOT auto-skipped, so it must appear explicitly in the grammar.
 dbmlFile ::= (item_ | NEWLINE)*
 private item_ ::= (project_definition | table_definition | ref_definition | enum_definition
-                   | table_group | table_partial | named_note)
+                   | table_group | table_partial | named_note | records_definition)
                    {recoverWhile=item_recover_}
-private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | TABLEPARTIAL | NOTE | NEWLINE | <<eof>>)
+private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | TABLEPARTIAL | NOTE | RECORDS | NEWLINE | <<eof>>)
 
 // === Shared rules ===
 // Many keywords can appear as identifiers (column names, table names, etc.) in DBML.
@@ -199,3 +200,12 @@ named_note ::= NOTE identifier_ note_value {pin=1}
 
 // === Note (shared) ===
 note_value ::= (COLON string_literal_) | (LBRACE nl_? string_literal_ nl_? RBRACE)
+
+// === Records ===
+records_definition ::= RECORDS table_name records_config {pin=1}
+table_records ::= RECORDS records_config {pin=1}
+private records_config ::= (LPAREN records_column_list RPAREN)? LBRACE records_body RBRACE
+private records_column_list ::= identifier_ (COMMA identifier_)*
+private records_body ::= (records_row | nl_)*
+records_row ::= records_value (COMMA records_value?)* {pin=1}
+records_value ::= MINUS NUMBER | string_literal_ | NUMBER | EXPRESSION | NULL | identifier_ (DOT identifier_)*
