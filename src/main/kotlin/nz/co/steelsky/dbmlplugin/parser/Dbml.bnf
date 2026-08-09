@@ -12,6 +12,7 @@
   tokens = [
     PROJECT="PROJECT"
     TABLE="TABLE"
+    SCHEMA="SCHEMA"
     RECORDS="RECORDS"
     AS="AS"
     REF="REF"
@@ -117,7 +118,7 @@ private project_note ::= NOTE note_value
 // === import module ===
 import_module ::= (USE|REUSE) (STAR|import_types) FROM SINGLE_QUOTED_STRING
 import_types ::=  LBRACE  (import_type | nl_)*  RBRACE
-import_type ::=  (TABLE | ENUM | TABLEPARTIAL | NOTE | TABLEGROUP ) import_type_name import_type_alias?
+import_type ::=  (TABLE | ENUM | TABLEPARTIAL | NOTE | TABLEGROUP | SCHEMA ) import_type_name import_type_alias?
 import_type_name ::=  schema_prefix? identifier_
 import_type_alias ::= AS identifier_
 

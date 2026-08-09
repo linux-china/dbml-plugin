@@ -107,6 +107,7 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Uu][Pp][Dd][Aa][Tt][Ee]                                    { return UPDATE; }
     [Aa][Cc][Tt][Ii][Oo][Nn]                                    { return ACTION; }
     [Cc][Oo][Ll][Oo][Rr]                                        { return COLOR; }
+    [Ss][Cc][Hh][Ee][Mm][Aa]                                    { return SCHEMA; }
     [Tt][Aa][Bb][Ll][Ee]                                        { return TABLE; }
     [Bb][Tt][Rr][Ee][Ee]                                        { return BTREE; }
     [Nn][Oo][Tt][Ee]                                            { return NOTE; }
