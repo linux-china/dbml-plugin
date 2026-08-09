@@ -2,6 +2,15 @@
 
 # dbml-plugin Changelog
 
+## [0.1.1]
+
+### Added
+
+- Add `records` support
+- Add Optional Relationships support: `?>`, `>?`, `?>?`, `-?`, `<?` and `?<>?`
+- Inline Metadata for table and column: `Table users [owner: "data-team", sla_hours: "24", pii: "true"]`
+- Add module system support
+
 ## [0.1.0]
 ### Added
 - DBML language recognition for `.dbml` files across all JetBrains IDEs
