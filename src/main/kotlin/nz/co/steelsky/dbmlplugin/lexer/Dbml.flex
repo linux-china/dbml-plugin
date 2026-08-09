@@ -50,11 +50,17 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
 
     // Multi-character operators
     "<>"                        { return NE; }
+    "?<>?"                         { return QUESTION_NE_QUESTION; }
 
     // Single-character operators and delimiters
     "-"                         { return MINUS; }
+    "-?"                        { return MINUS_QUESTION; }
     "<"                         { return LT; }
+    "<?"                        { return LT_QUESTION; }
     ">"                         { return GT; }
+    "?>"                        { return QUESTION_GT; }
+    ">?"                        { return GT_QUESTION; }
+    "?>?"                       { return QUESTION_GT_QUESTION; }
     "("                         { return LPAREN; }
     ")"                         { return RPAREN; }
     "["                         { return LBRACK; }
