@@ -199,7 +199,7 @@ private check_note_setting ::= NOTE COLON string_literal_
 table_group ::= TABLEGROUP identifier_ table_group_settings? LBRACE table_group_body RBRACE {pin=1}
 table_group_settings ::= LBRACK table_group_setting (COMMA table_group_setting)* RBRACK {pin=1}
 table_group_setting ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
-private table_group_body ::= (table_group_entry | table_group_note | nl_)*
+private table_group_body ::= (table_group_note | table_group_entry | nl_)*
 table_group_entry ::= table_name
 private table_group_note ::= NOTE note_value
 
