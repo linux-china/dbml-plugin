@@ -40,6 +40,9 @@
     INACTIVE="INACTIVE"
     RESTRICT="RESTRICT"
     NONE="NONE"
+    USE="USE"
+    REUSE="REUSE"
+    FROM="FROM"
     SET="SET"
     NO="NO"
     ACTION="ACTION"
@@ -64,6 +67,7 @@
     COLON="COLON"
     COMMA="COMMA"
     DOT="DOT"
+    STAR="STAR"
     TILDE="TILDE"
     LITERAL="LITERAL"
     NUMBER="NUMBER"
@@ -83,7 +87,7 @@
 
 // Root — NEWLINE is NOT auto-skipped, so it must appear explicitly in the grammar.
 dbmlFile ::= (item_ | NEWLINE)*
-private item_ ::= (project_definition | table_definition | ref_definition | enum_definition
+private item_ ::= (project_definition | import_module |  table_definition | ref_definition | enum_definition
                    | table_group | table_partial | named_note | records_definition)
                    {recoverWhile=item_recover_}
 private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | TABLEPARTIAL | NOTE | RECORDS | NEWLINE | <<eof>>)
@@ -109,6 +113,13 @@ project_definition ::= PROJECT identifier_? LBRACE project_body RBRACE {pin=1}
 private project_body ::= (project_property | project_note | nl_)*
 project_property ::= LITERAL COLON string_literal_ {pin=2}
 private project_note ::= NOTE note_value
+
+// === import module ===
+import_module ::= (USE|REUSE) (STAR|import_types) FROM SINGLE_QUOTED_STRING
+import_types ::=  LBRACE  (import_type | nl_)*  RBRACE
+import_type ::=  (TABLE | ENUM | TABLEPARTIAL | NOTE | TABLEGROUP ) import_type_name import_type_alias?
+import_type_name ::=  schema_prefix? identifier_
+import_type_alias ::= AS identifier_
 
 // === Table ===
 table_definition ::= TABLE table_name table_alias? table_settings? LBRACE table_body RBRACE {pin=1}

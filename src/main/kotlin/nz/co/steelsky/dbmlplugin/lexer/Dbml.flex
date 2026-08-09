@@ -48,6 +48,7 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     // The closing "*/" in IN_BLOCK_COMMENT returns BLOCK_COMMENT covering the full literal.
     "/*"                        { yybegin(IN_BLOCK_COMMENT); }
 
+    "*"                         { return STAR; }
     // Multi-character operators
     "<>"                        { return NE; }
     "?<>?"                         { return QUESTION_NE_QUESTION; }
@@ -115,6 +116,9 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Nn][Aa][Mm][Ee]                                            { return NAME; }
     [Nn][Uu][Ll][Ll]                                            { return NULL; }
     [Nn][Oo][Nn][Ee]                                            { return NONE; }
+    [Uu][Ss][Ee]                                                { return USE; }
+    [Rr][Ee][Uu][Ss][Ee]                                        { return REUSE; }
+    [Ff][Rr][Oo][Mm]                                            { return FROM; }
     [Nn][Oo][Tt]                                                { return NOT; }
     [Ss][Ee][Tt]                                                { return SET; }
     [Rr][Ee][Ff]                                                { return REF; }
