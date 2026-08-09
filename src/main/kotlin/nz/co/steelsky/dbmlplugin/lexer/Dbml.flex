@@ -94,6 +94,7 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Rr][Ee][Ss][Tt][Rr][Ii][Cc][Tt]                            { return RESTRICT; }
     [Dd][Ee][Ff][Aa][Uu][Ll][Tt]                                { return DEFAULT; }
     [Cc][Aa][Ss][Cc][Aa][Dd][Ee]                                { return CASCADE; }
+    [Ii][Nn][Aa][Cc][Tt][Ii][Vv][Ee]                            { return INACTIVE; }
     [Cc][Hh][Ee][Cc][Kk][Ss]                                    { return CHECKS; }
     [Cc][Hh][Ee][Cc][Kk]                                        { return CHECK; }
     [Pp][Rr][Oo][Jj][Ee][Cc][Tt]                                { return PROJECT; }
@@ -113,6 +114,7 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Tt][Yy][Pp][Ee]                                            { return TYPE; }
     [Nn][Aa][Mm][Ee]                                            { return NAME; }
     [Nn][Uu][Ll][Ll]                                            { return NULL; }
+    [Nn][Oo][Nn][Ee]                                            { return NONE; }
     [Nn][Oo][Tt]                                                { return NOT; }
     [Ss][Ee][Tt]                                                { return SET; }
     [Rr][Ee][Ff]                                                { return REF; }
