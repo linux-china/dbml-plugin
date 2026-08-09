@@ -37,7 +37,9 @@
     DELETE="DELETE"
     UPDATE="UPDATE"
     CASCADE="CASCADE"
+    INACTIVE="INACTIVE"
     RESTRICT="RESTRICT"
+    NONE="NONE"
     SET="SET"
     NO="NO"
     ACTION="ACTION"
@@ -99,6 +101,7 @@ schema_prefix ::= identifier_ DOT
 table_name ::= schema_prefix? identifier_
 private string_literal_ ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | triple_quoted_string
 triple_quoted_string ::= TRIPLE_STRING_OPEN (TRIPLE_STRING_CONTENT | STRING_ESCAPE | NEWLINE)* TRIPLE_STRING_CLOSE {pin=1}
+color_value ::= COLOR_CODE | NONE
 private nl_ ::= NEWLINE+
 
 // === Project ===
@@ -111,7 +114,7 @@ private project_note ::= NOTE note_value
 table_definition ::= TABLE table_name table_alias? table_settings? LBRACE table_body RBRACE {pin=1}
 table_alias ::= AS identifier_
 table_settings ::= LBRACK table_setting (COMMA table_setting)* RBRACK {pin=1}
-table_setting ::= HEADERCOLOR COLON COLOR_CODE | NOTE COLON string_literal_ | identifier_ COLON string_literal_
+table_setting ::= HEADERCOLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
 // Order matters: indexes_definition, table_note, and table_partial_ref must be tried
 // BEFORE column_definition, because identifier_ now matches keywords like NOTE, INDEXES, etc.
 private table_body ::= (indexes_definition | checks_definition | table_note | table_partial_ref | table_records | column_definition | nl_)*
@@ -150,10 +153,10 @@ relation ::= LT | LT_QUESTION | GT | QUESTION_GT | GT_QUESTION | QUESTION_GT_QUE
 ref_column_names ::= identifier_ DOT (identifier_ DOT ref_columns_part | ref_columns_part)
 private ref_columns_part ::= identifier_ | LPAREN identifier_ (COMMA identifier_)* RPAREN
 ref_settings ::= LBRACK ref_setting (COMMA ref_setting)* RBRACK {pin=1}
-ref_setting ::= ref_delete_setting | ref_update_setting | ref_color_setting
+ref_setting ::= INACTIVE | ref_delete_setting | ref_update_setting | ref_color_setting
 private ref_delete_setting ::= DELETE COLON ref_action
 private ref_update_setting ::= UPDATE COLON ref_action
-private ref_color_setting ::= COLOR COLON COLOR_CODE
+private ref_color_setting ::= COLOR COLON color_value
 ref_action ::= CASCADE | RESTRICT | SET NULL | SET DEFAULT | NO ACTION
 
 // === Enum ===
@@ -195,7 +198,7 @@ private check_note_setting ::= NOTE COLON string_literal_
 // === Table Group ===
 table_group ::= TABLEGROUP identifier_ table_group_settings? LBRACE table_group_body RBRACE {pin=1}
 table_group_settings ::= LBRACK table_group_setting (COMMA table_group_setting)* RBRACK {pin=1}
-table_group_setting ::= COLOR COLON COLOR_CODE | NOTE COLON string_literal_ | identifier_ COLON string_literal_
+table_group_setting ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
 private table_group_body ::= (table_group_entry | table_group_note | nl_)*
 table_group_entry ::= table_name
 private table_group_note ::= NOTE note_value
@@ -206,7 +209,7 @@ table_partial ::= TABLEPARTIAL identifier_ table_settings? LBRACE table_body RBR
 // === Named Note ===
 named_note ::= NOTE identifier_ note_settings? note_value {pin=1}
 note_settings ::= LBRACK note_setting (COMMA note_setting)* RBRACK {pin=1}
-note_setting ::= identifier_ COLON string_literal_
+note_setting ::= COLOR COLON color_value | identifier_ COLON string_literal_
 
 // === Note (shared) ===
 note_value ::= (COLON string_literal_) | (LBRACE nl_? string_literal_ nl_? RBRACE)
