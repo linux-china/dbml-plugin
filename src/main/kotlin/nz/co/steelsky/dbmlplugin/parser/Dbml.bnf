@@ -13,6 +13,8 @@
     PROJECT="PROJECT"
     TABLE="TABLE"
     SCHEMA="SCHEMA"
+    METADATA="METADATA"
+    COLUMN="COLUMN"
     RECORDS="RECORDS"
     AS="AS"
     REF="REF"
@@ -89,9 +91,9 @@
 // Root — NEWLINE is NOT auto-skipped, so it must appear explicitly in the grammar.
 dbmlFile ::= (item_ | NEWLINE)*
 private item_ ::= (project_definition | import_module |  table_definition | ref_definition | enum_definition
-                   | table_group | table_partial | named_note | records_definition)
+                   | table_group | table_partial | named_note | records_definition | metadata_definition )
                    {recoverWhile=item_recover_}
-private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | TABLEPARTIAL | NOTE | RECORDS | NEWLINE | <<eof>>)
+private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | METADATA | TABLEPARTIAL | NOTE | RECORDS | NEWLINE | <<eof>>)
 
 // === Shared rules ===
 // Many keywords can appear as identifiers (column names, table names, etc.) in DBML.
@@ -234,3 +236,10 @@ private records_column_list ::= identifier_ (COMMA identifier_)*
 private records_body ::= (records_row | nl_)*
 records_row ::= records_value (COMMA records_value?)* {pin=1}
 records_value ::= MINUS NUMBER | string_literal_ | NUMBER | EXPRESSION | NULL | identifier_ (DOT identifier_)*
+
+// === Metadata ===
+metadata_definition ::= METADATA (metadata_definition_table | metadata_definition_column ) LBRACE metadata_definition_body RBRACE {pin=1}
+metadata_definition_table ::= TABLE table_name
+metadata_definition_column ::= COLUMN (identifier_ DOT)* identifier_
+metadata_definition_body ::= (metadata_definition_body_kv | nl_)*
+metadata_definition_body_kv ::= NOTE COLON string_literal_ | identifier_ COLON string_literal_

@@ -108,6 +108,8 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Aa][Cc][Tt][Ii][Oo][Nn]                                    { return ACTION; }
     [Cc][Oo][Ll][Oo][Rr]                                        { return COLOR; }
     [Ss][Cc][Hh][Ee][Mm][Aa]                                    { return SCHEMA; }
+    [Mm][Ee][Tt][Aa][Dd][Aa][Tt][Aa]                            { return METADATA; }
+    [Cc][Oo][Ll][Uu][Mm][Nn]                                    { return COLUMN; }
     [Tt][Aa][Bb][Ll][Ee]                                        { return TABLE; }
     [Bb][Tt][Rr][Ee][Ee]                                        { return BTREE; }
     [Nn][Oo][Tt][Ee]                                            { return NOTE; }
