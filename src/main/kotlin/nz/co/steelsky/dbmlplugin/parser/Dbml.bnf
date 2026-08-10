@@ -120,9 +120,11 @@ private nl_ ::= NEWLINE+
 
 // === Project ===
 project_definition ::= PROJECT identifier_? LBRACE project_body RBRACE {pin=1}
-private project_body ::= (project_property | project_note | nl_)*
-project_property ::= LITERAL COLON string_literal_ {pin=2}
-private project_note ::= NOTE note_value
+project_body ::= (project_property | project_note | nl_)*
+project_property ::= project_property_name COLON project_property_value {pin=2}
+project_property_name ::= identifier_
+project_property_value ::= string_literal_
+project_note ::= NOTE note_value
 
 // === import module ===
 import_module ::= (USE|REUSE) (STAR|import_types) FROM SINGLE_QUOTED_STRING
