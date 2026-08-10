@@ -12,6 +12,7 @@
 - Add module system support
 - Add metadata block
 - Add `DiagramView` block with `Tables`, `Notes`, `TableGroups` and `Schemas` categories
+- Add data lineage support: `Dep: raw_orders -> stg_orders`, inline `[dep: <- stg_orders]` on tables and columns, and `Dep name [color: #79AD51] { ... }` blocks
 
 ## [0.1.0]
 ### Added
