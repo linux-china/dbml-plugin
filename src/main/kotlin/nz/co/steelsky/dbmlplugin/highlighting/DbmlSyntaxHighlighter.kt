@@ -61,6 +61,7 @@ class DbmlSyntaxHighlighter : SyntaxHighlighterBase() {
             tokenType == DbmlTypes.LPAREN || tokenType == DbmlTypes.RPAREN -> PARENTHESES_KEYS
             tokenType == DbmlTypes.MINUS || tokenType == DbmlTypes.LT
                 || tokenType == DbmlTypes.GT || tokenType == DbmlTypes.NE
+                || tokenType == DbmlTypes.ARROW_RIGHT || tokenType == DbmlTypes.ARROW_LEFT
                 || tokenType == DbmlTypes.COLON || tokenType == DbmlTypes.COMMA
                 || tokenType == DbmlTypes.DOT || tokenType == DbmlTypes.TILDE -> OPERATOR_KEYS
             tokenType == TokenType.BAD_CHARACTER -> BAD_CHARACTER_KEYS

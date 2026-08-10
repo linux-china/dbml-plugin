@@ -33,7 +33,8 @@ object DbmlTokenSets {
         DbmlTypes.USE, DbmlTypes.REUSE, DbmlTypes.FROM, DbmlTypes.SCHEMA,
         DbmlTypes.METADATA, DbmlTypes.COLUMN,
         DbmlTypes.DIAGRAMVIEW, DbmlTypes.TABLES, DbmlTypes.NOTES,
-        DbmlTypes.TABLEGROUPS, DbmlTypes.SCHEMAS
+        DbmlTypes.TABLEGROUPS, DbmlTypes.SCHEMAS,
+        DbmlTypes.DEP
     )
 
     @JvmField

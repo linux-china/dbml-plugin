@@ -53,6 +53,10 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     "<>"                        { return NE; }
     "?<>?"                         { return QUESTION_NE_QUESTION; }
 
+    // Data-lineage arrows (Dep)
+    "->"                        { return ARROW_RIGHT; }
+    "<-"                        { return ARROW_LEFT; }
+
     // Single-character operators and delimiters
     "-"                         { return MINUS; }
     "-?"                        { return MINUS_QUESTION; }
@@ -130,6 +134,7 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Nn][Oo][Tt]                                                { return NOT; }
     [Ss][Ee][Tt]                                                { return SET; }
     [Rr][Ee][Ff]                                                { return REF; }
+    [Dd][Ee][Pp]                                                { return DEP; }
     [Kk][Ee][Yy]                                                { return KEY; }
     [Pp][Kk]                                                    { return PK; }
     [Nn][Oo]                                                    { return NO; }

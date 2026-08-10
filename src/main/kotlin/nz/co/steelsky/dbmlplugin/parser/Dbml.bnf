@@ -18,6 +18,7 @@
     RECORDS="RECORDS"
     AS="AS"
     REF="REF"
+    DEP="DEP"
     ENUM="ENUM"
     TABLEGROUP="TABLEGROUP"
     TABLEGROUPS="TABLEGROUPS"
@@ -66,6 +67,8 @@
     QUESTION_GT_QUESTION="QUESTION_GT_QUESTION"
     NE="NE"
     QUESTION_NE_QUESTION="QUESTION_NE_QUESTION"
+    ARROW_RIGHT="ARROW_RIGHT"
+    ARROW_LEFT="ARROW_LEFT"
     LPAREN="LPAREN"
     RPAREN="RPAREN"
     LBRACK="LBRACK"
@@ -95,11 +98,11 @@
 
 // Root — NEWLINE is NOT auto-skipped, so it must appear explicitly in the grammar.
 dbmlFile ::= (item_ | NEWLINE)*
-private item_ ::= (project_definition | import_module |  table_definition | ref_definition | enum_definition
+private item_ ::= (project_definition | import_module |  table_definition | ref_definition | dep_definition | enum_definition
                    | table_group | table_partial | named_note | records_definition | metadata_definition
                    | diagram_view )
                    {recoverWhile=item_recover_}
-private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | METADATA | TABLEPARTIAL | DIAGRAMVIEW | NOTE | RECORDS | NEWLINE | <<eof>>)
+private item_recover_ ::= !(PROJECT | TABLE | REF | DEP | ENUM | TABLEGROUP | METADATA | TABLEPARTIAL | DIAGRAMVIEW | NOTE | RECORDS | NEWLINE | <<eof>>)
 
 // === Shared rules ===
 // Many keywords can appear as identifiers (column names, table names, etc.) in DBML.
@@ -137,7 +140,7 @@ import_type_alias ::= AS identifier_
 table_definition ::= TABLE table_name table_alias? table_settings? LBRACE table_body RBRACE {pin=1}
 table_alias ::= AS identifier_
 table_settings ::= LBRACK nl_* table_setting (COMMA table_setting)* RBRACK {pin=1}
-table_setting ::= HEADERCOLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
+table_setting ::= HEADERCOLOR COLON color_value | NOTE COLON string_literal_ | dep_inline_setting | identifier_ COLON string_literal_
 // Order matters: indexes_definition, table_note, and table_partial_ref must be tried
 // BEFORE column_definition, because identifier_ now matches keywords like NOTE, INDEXES, etc.
 private table_body ::= (indexes_definition | checks_definition | table_note | table_partial_ref | table_records | column_definition | nl_)*
@@ -151,7 +154,7 @@ private datatype_param ::= LITERAL | NUMBER
 column_settings ::= LBRACK nl_* column_setting (COMMA column_setting)* RBRACK {pin=1}
 column_setting ::= not_null_setting | null_setting | primary_key_setting | pk_setting
                  | unique_setting | increment_setting | default_setting
-                 | column_note_setting | check_setting | column_inline_ref | column_setting_kv
+                 | column_note_setting | check_setting | column_inline_ref | dep_inline_setting | column_setting_kv
 private not_null_setting ::= NOT NULL
 private null_setting ::= NULL
 private primary_key_setting ::= PRIMARY KEY
@@ -181,6 +184,33 @@ private ref_delete_setting ::= DELETE COLON ref_action
 private ref_update_setting ::= UPDATE COLON ref_action
 private ref_color_setting ::= COLOR COLON color_value
 ref_action ::= CASCADE | RESTRICT | SET NULL | SET DEFAULT | NO ACTION
+
+// === Dep (data lineage) ===
+// A dependency edge points from the upstream endpoint to the downstream endpoint.
+// Endpoints are either tables or columns, so both levels may be mixed in one edge.
+dep_definition ::= DEP dep_name? (dep_short_form | dep_block_form) {pin=1}
+dep_name ::= identifier_
+private dep_short_form ::= COLON dep_edge
+// pin=2 (after LBRACE): keep the block in the tree when one of its lines is malformed.
+private dep_block_form ::= dep_settings? LBRACE dep_body RBRACE {pin=2}
+// Block body groups the edges of one transformation step, plus its settings.
+// dep_property must be tried BEFORE dep_edge, because both start with an identifier.
+private dep_body ::= (dep_property | dep_edge | nl_)*
+dep_edge ::= dep_endpoint dep_arrow dep_endpoint {pin=2}
+dep_arrow ::= ARROW_RIGHT | ARROW_LEFT
+// table, table.column, schema.table or schema.table.column
+dep_endpoint ::= identifier_ (DOT identifier_)*
+dep_settings ::= LBRACK nl_* dep_setting (COMMA dep_setting)* RBRACK {pin=1}
+dep_setting ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
+// Custom keys (e.g. `materialized: table`, `owner: 'data-team'`) are preserved as-is.
+dep_property ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON dep_property_value
+// A custom value may be a bare word, including words that are keywords elsewhere (`materialized: table`).
+dep_property_value ::= string_literal_ | color_value | EXPRESSION | NUMBER | dep_word_
+private dep_word_ ::= identifier_ | PROJECT | TABLE | TABLEPARTIAL | TABLEGROUP | DIAGRAMVIEW
+                   | SCHEMA | METADATA | COLUMN | RECORDS | REF | DEP | ENUM
+                   | USE | REUSE | FROM | INACTIVE
+// Inline form inside table or column settings: [dep: <- stg_orders]
+dep_inline_setting ::= DEP COLON dep_arrow dep_endpoint {pin=2}
 
 // === Enum ===
 enum_definition ::= ENUM table_name LBRACE enum_body RBRACE {pin=1}
