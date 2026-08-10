@@ -130,7 +130,8 @@ project_property_value ::= string_literal_
 project_note ::= NOTE note_value
 
 // === import module ===
-import_module ::= (USE|REUSE) (STAR|import_types) FROM SINGLE_QUOTED_STRING
+import_module ::= (USE|REUSE) (STAR|import_types) FROM import_module_path
+import_module_path ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING
 import_types ::=  LBRACE  (import_type | nl_)*  RBRACE
 import_type ::=  (TABLE | ENUM | TABLEPARTIAL | NOTE | TABLEGROUP | SCHEMA ) import_type_name import_type_alias?
 import_type_name ::=  schema_prefix? identifier_
@@ -138,7 +139,8 @@ import_type_alias ::= AS identifier_
 
 // === Table ===
 table_definition ::= TABLE table_name table_alias? table_settings? LBRACE table_body RBRACE {pin=1}
-table_alias ::= AS identifier_
+table_alias ::= AS table_alias_name
+table_alias_name ::= identifier_
 table_settings ::= LBRACK nl_* table_setting (COMMA table_setting)* RBRACK {pin=1}
 table_setting ::= HEADERCOLOR COLON color_value | NOTE COLON string_literal_ | dep_inline_setting | identifier_ COLON string_literal_
 // Order matters: indexes_definition, table_note, and table_partial_ref must be tried
@@ -148,7 +150,8 @@ private table_note ::= NOTE note_value
 table_partial_ref ::= TILDE identifier_
 
 // === Column ===
-column_definition ::= identifier_ column_datatype column_settings? {pin=1}
+column_definition ::= column_name column_datatype column_settings? {pin=1}
+column_name ::= identifier_
 column_datatype ::= schema_prefix? identifier_ (LPAREN datatype_param (COMMA datatype_param)* RPAREN)?
 private datatype_param ::= LITERAL | NUMBER
 column_settings ::= LBRACK nl_* column_setting (COMMA column_setting)* RBRACK {pin=1}
@@ -213,7 +216,8 @@ private dep_word_ ::= identifier_ | PROJECT | TABLE | TABLEPARTIAL | TABLEGROUP 
 dep_inline_setting ::= DEP COLON dep_arrow dep_endpoint {pin=2}
 
 // === Enum ===
-enum_definition ::= ENUM table_name LBRACE enum_body RBRACE {pin=1}
+enum_definition ::= ENUM enum_name LBRACE enum_body RBRACE {pin=1}
+enum_name ::= schema_prefix? identifier_
 private enum_body ::= (enum_item | nl_)*
 enum_item ::= enum_value enum_value_settings? {pin=1}
 // enum value, some keywords allowed
@@ -264,7 +268,8 @@ table_partial ::= TABLEPARTIAL identifier_ table_settings? LBRACE table_body RBR
 // === Diagram View ===
 // A view selects which tables, sticky notes, table groups and schemas are shown in the
 // diagram. Each category body is either `*` (all items) or a newline-separated name list.
-diagram_view ::= DIAGRAMVIEW identifier_ LBRACE diagram_view_body RBRACE {pin=1}
+diagram_view ::= DIAGRAMVIEW diagram_name LBRACE diagram_view_body RBRACE {pin=1}
+diagram_name ::= identifier_
 private diagram_view_body ::= (diagram_view_tables | diagram_view_notes | diagram_view_table_groups | diagram_view_schemas | nl_)*
 diagram_view_tables ::= TABLES LBRACE diagram_view_items RBRACE {pin=2}
 diagram_view_notes ::= NOTES LBRACE diagram_view_items RBRACE {pin=2}
@@ -274,7 +279,8 @@ private diagram_view_items ::= (STAR | diagram_view_item | nl_)*
 diagram_view_item ::= table_name
 
 // === Named Note ===
-named_note ::= NOTE identifier_ note_settings? note_value {pin=1}
+named_note ::= NOTE named_note_name note_settings? note_value {pin=1}
+named_note_name ::= identifier_
 note_settings ::= LBRACK nl_* note_setting (COMMA note_setting)* RBRACK {pin=1}
 note_setting ::= COLOR COLON color_value | identifier_ COLON string_literal_
 
@@ -293,6 +299,7 @@ records_value ::= MINUS NUMBER | string_literal_ | NUMBER | EXPRESSION | NULL | 
 // === Metadata ===
 metadata_definition ::= METADATA (metadata_definition_table | metadata_definition_column ) LBRACE metadata_definition_body RBRACE {pin=1}
 metadata_definition_table ::= TABLE table_name
-metadata_definition_column ::= COLUMN (identifier_ DOT)* identifier_
+metadata_definition_column ::= COLUMN metadata_definition_column_name
+metadata_definition_column_name ::= (identifier_ DOT)* identifier_
 metadata_definition_body ::= (metadata_definition_body_kv | nl_)*
 metadata_definition_body_kv ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
