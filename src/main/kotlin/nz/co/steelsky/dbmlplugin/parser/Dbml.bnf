@@ -182,8 +182,10 @@ ref_action ::= CASCADE | RESTRICT | SET NULL | SET DEFAULT | NO ACTION
 
 // === Enum ===
 enum_definition ::= ENUM table_name LBRACE enum_body RBRACE {pin=1}
-private enum_body ::= (enum_value | nl_)*
-enum_value ::= identifier_ enum_value_settings? {pin=1}
+private enum_body ::= (enum_item | nl_)*
+enum_item ::= enum_value enum_value_settings? {pin=1}
+// enum value, some keywords allowed
+enum_value ::= (identifier_ | INACTIVE )
 enum_value_settings ::= LBRACK enum_value_setting (COMMA enum_value_setting)* RBRACK {pin=1}
 private enum_value_setting ::= NOTE COLON string_literal_ | identifier_ COLON string_literal_
 
