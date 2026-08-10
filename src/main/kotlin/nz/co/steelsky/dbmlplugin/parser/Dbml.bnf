@@ -20,7 +20,12 @@
     REF="REF"
     ENUM="ENUM"
     TABLEGROUP="TABLEGROUP"
+    TABLEGROUPS="TABLEGROUPS"
     TABLEPARTIAL="TABLEPARTIAL"
+    DIAGRAMVIEW="DIAGRAMVIEW"
+    TABLES="TABLES"
+    NOTES="NOTES"
+    SCHEMAS="SCHEMAS"
     HEADERCOLOR="HEADERCOLOR"
     COLOR="COLOR"
     NOTE="NOTE"
@@ -91,9 +96,10 @@
 // Root — NEWLINE is NOT auto-skipped, so it must appear explicitly in the grammar.
 dbmlFile ::= (item_ | NEWLINE)*
 private item_ ::= (project_definition | import_module |  table_definition | ref_definition | enum_definition
-                   | table_group | table_partial | named_note | records_definition | metadata_definition )
+                   | table_group | table_partial | named_note | records_definition | metadata_definition
+                   | diagram_view )
                    {recoverWhile=item_recover_}
-private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | METADATA | TABLEPARTIAL | NOTE | RECORDS | NEWLINE | <<eof>>)
+private item_recover_ ::= !(PROJECT | TABLE | REF | ENUM | TABLEGROUP | METADATA | TABLEPARTIAL | DIAGRAMVIEW | NOTE | RECORDS | NEWLINE | <<eof>>)
 
 // === Shared rules ===
 // Many keywords can appear as identifiers (column names, table names, etc.) in DBML.
@@ -104,6 +110,7 @@ private identifier_ ::= LITERAL | DOUBLE_QUOTED_STRING
                        | UNIQUE | INCREMENT | PRIMARY | INDEXES | BTREE | HASH
                        | DELETE | UPDATE | CASCADE | RESTRICT | SET | NO | ACTION
                        | HEADERCOLOR | COLOR | AS | CHECK | CHECKS
+                       | TABLES | NOTES | TABLEGROUPS | SCHEMAS
 schema_prefix ::= identifier_ DOT
 table_name ::= schema_prefix? identifier_
 private string_literal_ ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | triple_quoted_string
@@ -219,6 +226,18 @@ private table_group_note ::= NOTE note_value
 
 // === Table Partial ===
 table_partial ::= TABLEPARTIAL identifier_ table_settings? LBRACE table_body RBRACE {pin=1}
+
+// === Diagram View ===
+// A view selects which tables, sticky notes, table groups and schemas are shown in the
+// diagram. Each category body is either `*` (all items) or a newline-separated name list.
+diagram_view ::= DIAGRAMVIEW identifier_ LBRACE diagram_view_body RBRACE {pin=1}
+private diagram_view_body ::= (diagram_view_tables | diagram_view_notes | diagram_view_table_groups | diagram_view_schemas | nl_)*
+diagram_view_tables ::= TABLES LBRACE diagram_view_items RBRACE {pin=2}
+diagram_view_notes ::= NOTES LBRACE diagram_view_items RBRACE {pin=2}
+diagram_view_table_groups ::= TABLEGROUPS LBRACE diagram_view_items RBRACE {pin=2}
+diagram_view_schemas ::= SCHEMAS LBRACE diagram_view_items RBRACE {pin=2}
+private diagram_view_items ::= (STAR | diagram_view_item | nl_)*
+diagram_view_item ::= table_name
 
 // === Named Note ===
 named_note ::= NOTE identifier_ note_settings? note_value {pin=1}

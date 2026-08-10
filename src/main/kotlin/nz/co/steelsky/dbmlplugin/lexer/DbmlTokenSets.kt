@@ -31,7 +31,9 @@ object DbmlTokenSets {
         DbmlTypes.CHECK, DbmlTypes.CHECKS,
         DbmlTypes.NONE, DbmlTypes.INACTIVE,
         DbmlTypes.USE, DbmlTypes.REUSE, DbmlTypes.FROM, DbmlTypes.SCHEMA,
-        DbmlTypes.METADATA, DbmlTypes.COLUMN
+        DbmlTypes.METADATA, DbmlTypes.COLUMN,
+        DbmlTypes.DIAGRAMVIEW, DbmlTypes.TABLES, DbmlTypes.NOTES,
+        DbmlTypes.TABLEGROUPS, DbmlTypes.SCHEMAS
     )
 
     @JvmField

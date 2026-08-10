@@ -88,8 +88,10 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     {NUMBER}                    { return NUMBER; }
 
     // Keywords (case-insensitive, longest-first to avoid partial matches)
+    [Tt][Aa][Bb][Ll][Ee][Gg][Rr][Oo][Uu][Pp][Ss]               { return TABLEGROUPS; }
     [Tt][Aa][Bb][Ll][Ee][Gg][Rr][Oo][Uu][Pp]                   { return TABLEGROUP; }
     [Tt][Aa][Bb][Ll][Ee][Pp][Aa][Rr][Tt][Ii][Aa][Ll]           { return TABLEPARTIAL; }
+    [Dd][Ii][Aa][Gg][Rr][Aa][Mm][Vv][Ii][Ee][Ww]               { return DIAGRAMVIEW; }
     [Hh][Ee][Aa][Dd][Ee][Rr][Cc][Oo][Ll][Oo][Rr]               { return HEADERCOLOR; }
     [Ii][Nn][Cc][Rr][Ee][Mm][Ee][Nn][Tt]                        { return INCREMENT; }
     [Rr][Ee][Ss][Tt][Rr][Ii][Cc][Tt]                            { return RESTRICT; }
@@ -107,11 +109,14 @@ COLOR_CODE_BODY = {HEX_DIGIT}{6} | {HEX_DIGIT}{3}
     [Uu][Pp][Dd][Aa][Tt][Ee]                                    { return UPDATE; }
     [Aa][Cc][Tt][Ii][Oo][Nn]                                    { return ACTION; }
     [Cc][Oo][Ll][Oo][Rr]                                        { return COLOR; }
+    [Ss][Cc][Hh][Ee][Mm][Aa][Ss]                                { return SCHEMAS; }
     [Ss][Cc][Hh][Ee][Mm][Aa]                                    { return SCHEMA; }
     [Mm][Ee][Tt][Aa][Dd][Aa][Tt][Aa]                            { return METADATA; }
     [Cc][Oo][Ll][Uu][Mm][Nn]                                    { return COLUMN; }
+    [Tt][Aa][Bb][Ll][Ee][Ss]                                    { return TABLES; }
     [Tt][Aa][Bb][Ll][Ee]                                        { return TABLE; }
     [Bb][Tt][Rr][Ee][Ee]                                        { return BTREE; }
+    [Nn][Oo][Tt][Ee][Ss]                                        { return NOTES; }
     [Nn][Oo][Tt][Ee]                                            { return NOTE; }
     [Ee][Nn][Uu][Mm]                                            { return ENUM; }
     [Hh][Aa][Ss][Hh]                                            { return HASH; }
