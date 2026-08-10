@@ -134,7 +134,7 @@ import_type_alias ::= AS identifier_
 // === Table ===
 table_definition ::= TABLE table_name table_alias? table_settings? LBRACE table_body RBRACE {pin=1}
 table_alias ::= AS identifier_
-table_settings ::= LBRACK table_setting (COMMA table_setting)* RBRACK {pin=1}
+table_settings ::= LBRACK nl_* table_setting (COMMA table_setting)* RBRACK {pin=1}
 table_setting ::= HEADERCOLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
 // Order matters: indexes_definition, table_note, and table_partial_ref must be tried
 // BEFORE column_definition, because identifier_ now matches keywords like NOTE, INDEXES, etc.
@@ -146,7 +146,7 @@ table_partial_ref ::= TILDE identifier_
 column_definition ::= identifier_ column_datatype column_settings? {pin=1}
 column_datatype ::= schema_prefix? identifier_ (LPAREN datatype_param (COMMA datatype_param)* RPAREN)?
 private datatype_param ::= LITERAL | NUMBER
-column_settings ::= LBRACK column_setting (COMMA column_setting)* RBRACK {pin=1}
+column_settings ::= LBRACK nl_* column_setting (COMMA column_setting)* RBRACK {pin=1}
 column_setting ::= not_null_setting | null_setting | primary_key_setting | pk_setting
                  | unique_setting | increment_setting | default_setting
                  | column_note_setting | check_setting | column_inline_ref | column_setting_kv
@@ -173,7 +173,7 @@ relation ::= LT | LT_QUESTION | GT | QUESTION_GT | GT_QUESTION | QUESTION_GT_QUE
 // Supports: table.column, schema.table.column, table.(col1, col2), schema.table.(col1, col2)
 ref_column_names ::= identifier_ DOT (identifier_ DOT ref_columns_part | ref_columns_part)
 private ref_columns_part ::= identifier_ | LPAREN identifier_ (COMMA identifier_)* RPAREN
-ref_settings ::= LBRACK ref_setting (COMMA ref_setting)* RBRACK {pin=1}
+ref_settings ::= LBRACK nl_* ref_setting (COMMA ref_setting)* RBRACK {pin=1}
 ref_setting ::= INACTIVE | ref_delete_setting | ref_update_setting | ref_color_setting
 private ref_delete_setting ::= DELETE COLON ref_action
 private ref_update_setting ::= UPDATE COLON ref_action
@@ -186,7 +186,7 @@ private enum_body ::= (enum_item | nl_)*
 enum_item ::= enum_value enum_value_settings? {pin=1}
 // enum value, some keywords allowed
 enum_value ::= (identifier_ | INACTIVE )
-enum_value_settings ::= LBRACK enum_value_setting (COMMA enum_value_setting)* RBRACK {pin=1}
+enum_value_settings ::= LBRACK nl_* enum_value_setting (COMMA enum_value_setting)* RBRACK {pin=1}
 private enum_value_setting ::= NOTE COLON string_literal_ | identifier_ COLON string_literal_
 
 // === Indexes ===
@@ -197,7 +197,7 @@ index_definition ::= (index_composite | index_single) index_settings? {pin=1}
 private index_composite ::= LPAREN index_column (COMMA index_column)* RPAREN
 private index_single ::= identifier_ | EXPRESSION
 index_column ::= identifier_ | EXPRESSION
-index_settings ::= LBRACK (pk_index_setting | index_setting_list) RBRACK {pin=1}
+index_settings ::= LBRACK nl_* (pk_index_setting | index_setting_list) RBRACK {pin=1}
 private pk_index_setting ::= PK
 private index_setting_list ::= index_setting (COMMA index_setting)*
 index_setting ::= index_unique_setting | index_pk_setting | index_primary_key_setting | index_name_setting | index_type_setting | index_note_setting
@@ -213,14 +213,14 @@ private index_note_setting ::= NOTE COLON string_literal_
 checks_definition ::= CHECKS LBRACE checks_body RBRACE {pin=2}
 private checks_body ::= (check_definition | nl_)*
 check_definition ::= EXPRESSION check_constraint_settings? {pin=1}
-check_constraint_settings ::= LBRACK check_constraint_setting (COMMA check_constraint_setting)* RBRACK {pin=1}
+check_constraint_settings ::= LBRACK nl_* check_constraint_setting (COMMA check_constraint_setting)* RBRACK {pin=1}
 check_constraint_setting ::= check_name_setting | check_note_setting
 private check_name_setting ::= NAME COLON string_literal_
 private check_note_setting ::= NOTE COLON string_literal_
 
 // === Table Group ===
 table_group ::= TABLEGROUP identifier_ table_group_settings? LBRACE table_group_body RBRACE {pin=1}
-table_group_settings ::= LBRACK table_group_setting (COMMA table_group_setting)* RBRACK {pin=1}
+table_group_settings ::= LBRACK nl_* table_group_setting (COMMA table_group_setting)* RBRACK {pin=1}
 table_group_setting ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
 private table_group_body ::= (table_group_note | table_group_entry | nl_)*
 table_group_entry ::= table_name
@@ -243,7 +243,7 @@ diagram_view_item ::= table_name
 
 // === Named Note ===
 named_note ::= NOTE identifier_ note_settings? note_value {pin=1}
-note_settings ::= LBRACK note_setting (COMMA note_setting)* RBRACK {pin=1}
+note_settings ::= LBRACK nl_* note_setting (COMMA note_setting)* RBRACK {pin=1}
 note_setting ::= COLOR COLON color_value | identifier_ COLON string_literal_
 
 // === Note (shared) ===
