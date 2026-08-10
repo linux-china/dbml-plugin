@@ -176,4 +176,31 @@ WHITE_SPACE (' ')
 'Schemas' ('Schemas')"""
         )
     }
+
+    fun testDepKeywordAndArrows() {
+        doTest(
+            "Dep: a -> b <- c",
+            """'Dep' ('Dep')
+':' (':')
+WHITE_SPACE (' ')
+identifier ('a')
+WHITE_SPACE (' ')
+'->' ('->')
+WHITE_SPACE (' ')
+identifier ('b')
+WHITE_SPACE (' ')
+'<-' ('<-')
+WHITE_SPACE (' ')
+identifier ('c')"""
+        )
+    }
+
+    fun testDepIsNotPrefixMatched() {
+        doTest(
+            "depth dependency",
+            """identifier ('depth')
+WHITE_SPACE (' ')
+identifier ('dependency')"""
+        )
+    }
 }

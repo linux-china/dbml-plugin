@@ -12,6 +12,7 @@ class DbmlHighlightingTest : BasePlatformTestCase() {
         val keywordTokens = listOf(
             DbmlTypes.TABLE, DbmlTypes.PROJECT, DbmlTypes.REF,
             DbmlTypes.ENUM, DbmlTypes.NOTE, DbmlTypes.INDEXES,
+            DbmlTypes.DEP,
         )
         for (token in keywordTokens) {
             val keys = highlighter.getTokenHighlights(token)
@@ -50,6 +51,7 @@ class DbmlHighlightingTest : BasePlatformTestCase() {
         val operatorTokens = listOf(
             DbmlTypes.LT, DbmlTypes.GT, DbmlTypes.MINUS,
             DbmlTypes.NE, DbmlTypes.COLON, DbmlTypes.DOT,
+            DbmlTypes.ARROW_RIGHT, DbmlTypes.ARROW_LEFT,
         )
         for (token in operatorTokens) {
             assertHighlightContains(token, DbmlSyntaxHighlighter.OPERATOR)
