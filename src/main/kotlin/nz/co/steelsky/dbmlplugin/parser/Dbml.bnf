@@ -242,4 +242,4 @@ metadata_definition ::= METADATA (metadata_definition_table | metadata_definitio
 metadata_definition_table ::= TABLE table_name
 metadata_definition_column ::= COLUMN (identifier_ DOT)* identifier_
 metadata_definition_body ::= (metadata_definition_body_kv | nl_)*
-metadata_definition_body_kv ::= NOTE COLON string_literal_ | identifier_ COLON string_literal_
+metadata_definition_body_kv ::= COLOR COLON color_value | NOTE COLON string_literal_ | identifier_ COLON string_literal_
