@@ -161,4 +161,19 @@ WHITE_SPACE (' ')
 identifier ('checked')"""
         )
     }
+
+    fun testDiagramViewKeywords() {
+        doTest(
+            "DiagramView Tables Notes TableGroups Schemas",
+            """'DiagramView' ('DiagramView')
+WHITE_SPACE (' ')
+'Tables' ('Tables')
+WHITE_SPACE (' ')
+'Notes' ('Notes')
+WHITE_SPACE (' ')
+'TableGroups' ('TableGroups')
+WHITE_SPACE (' ')
+'Schemas' ('Schemas')"""
+        )
+    }
 }
