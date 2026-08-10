@@ -10,6 +10,7 @@
 - Add Optional Relationships support: `?>`, `>?`, `?>?`, `-?`, `<?` and `?<>?`
 - Inline Metadata for table and column: `Table users [owner: "data-team", sla_hours: "24", pii: "true"]`
 - Add module system support
+- Add metadata block
 
 ## [0.1.0]
 ### Added
