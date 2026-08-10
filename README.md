@@ -35,7 +35,7 @@
 
 ## Supported Constructs
 
-Tables, columns, enums, refs, indexes, table groups, table partials, named notes, and project definitions — the full [DBML specification](https://dbml.dbdiagram.io/docs/).
+Tables, columns, enums, refs, indexes, table groups, table partials, named notes, metadata, diagram views, and project definitions — the full [DBML specification](https://dbml.dbdiagram.io/docs/).
 
 ## Known Limitations
 
